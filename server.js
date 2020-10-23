@@ -13,7 +13,7 @@ app.use(routes);
 
 // turn on connection to db and server
 // the sunc part means that this is Sequelize taking the models and connecting them to associated DB tables. If no table, it'll create it for you
-// FORCE doesn't have to be included, but if set to tru, it drops and recreates all the database tables on startup
+// FORCE doesn't have to be included, but if set to tru, it drops and recreates all the database tables on startup - functions like DROP TABLE IF EXISTS
 
 sequelize.sync({force: false}).then( () => {
     app.listen(PORT, () => console.log('Now Listening'));
