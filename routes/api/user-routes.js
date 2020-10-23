@@ -50,7 +50,7 @@ router.post('/', (req, res) => {
     });
 });
 
-// 
+// Login Route /api/users/login
 router.post('/login', (req, res) => {
     // expects {email: 'lernantino@gmail.com', password: 'password1234'}
       User.findOne({
