@@ -2,7 +2,33 @@ const { Model, DataTypes } = require('sequelize');
 const sequelize = require('../config/connection');
 
 // create out Post model
-class Post extends Model{}
+class Post extends Model{
+    // now we can use Post.upvote() as if it were one of Sequelize's other built in methods. 
+    // paramaters: req.body and an object of the model.
+    static upvote(body, models) {
+        return models.Vote.create({
+            user_id: body.user_id,
+            post_id: body.post_id
+        })
+        .then( () => {
+            return Post.findOne({
+                where: {
+                    id: body.post_id
+                },
+                attributes: [
+                    'id',
+                    'post_url',
+                    'title',
+                    'created_at',
+                    [
+                        sequelize.literal('(SELECT COUNT (*) FROM vote WHERE post.id = vote.post_id'),
+                        'vote_count'
+                    ]
+                ]
+            });
+        });
+    }
+}
 
 // create fields/columns for Post Model
 Post.init(
