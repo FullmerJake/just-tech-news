@@ -5,6 +5,9 @@ const sequelize = require('../config/connection');
 const { Post, User, Comment } = require('../models');
 
 router.get('/', (req, res) => {
+    // this route now has access to our user's session
+    console.log(req.session);
+
     Post.findAll({
         attributes: [
             'id',
@@ -38,6 +41,17 @@ router.get('/', (req, res) => {
         console.log(err);
         res.status(500).json(err);
     });
+});
+
+
+router.get('/login', (req, res) => {
+    if(req.session.loggedIn) {
+        res.redirect('/');
+        return;
+    }
+
+    // Our login page doesn't need any variables, so we don't need to pass a second arguement to the render() method.
+    res.render('login');
 });
 
 module.exports = router;
